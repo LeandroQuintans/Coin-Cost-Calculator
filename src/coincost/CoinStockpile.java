@@ -2,7 +2,7 @@ package coincost;
 
 import java.math.BigDecimal;
 
-public class CoinStockpile {
+public class CoinStockpile implements Cloneable {
     private BigDecimal value;
     private int amount;
 
@@ -27,4 +27,9 @@ public class CoinStockpile {
     public String toString() {
         return value.toString() + "," + amount;
     }
+
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
 }
