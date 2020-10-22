@@ -24,6 +24,19 @@ public class CoinCost {
         return null;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sBuilder = new StringBuilder();
+
+        for (CoinStockpile pouch : wallet) {
+            sBuilder.append(pouch.toString());
+            sBuilder.append(' ');
+        }
+
+        sBuilder.append(cost);
+
+        return sBuilder.toString();
+    }
     public static void main(String[] args) {
         
     }
