@@ -25,7 +25,7 @@ public class CoinStockpile implements Cloneable {
 
     @Override
     public String toString() {
-        return value.toString() + "," + amount;
+        return "(" + value.toString() + "," + amount + ")";
     }
 
     public Object clone() throws CloneNotSupportedException {
