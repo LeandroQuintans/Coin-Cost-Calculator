@@ -25,7 +25,7 @@ public class CoinCost {
     }
 
     public Iterator<CoinStockpile[]> payments() {
-        return null;
+        return new TopDownPaymentCalc().payments(wallet);
     }
 
     @Override
