@@ -1,22 +1,18 @@
 package coincost;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.Iterator;
-import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class CoinCost {
-    private CoinStockpile[] wallet;
+    private CoinPile wallet;
     private BigDecimal cost;
 
-    public CoinCost(CoinStockpile[] wallet, BigDecimal cost) {
-        this.wallet = wallet.clone();
+    public CoinCost(CoinPile wallet, BigDecimal cost) {
+        this.wallet = new CoinPile(wallet);
         this.cost = new BigDecimal(cost.toString());
     }
 
-    public CoinStockpile[] getWallet() {
+    public CoinPile getWallet() {
         return wallet;
     }
 
@@ -24,52 +20,105 @@ public class CoinCost {
         return cost;
     }
 
-    public Iterator<CoinStockpile[]> payments() {
-        return new TopDownPaymentCalc().payments(wallet);
+    public Iterator<CoinPile> payments() {
+        return new TopDownPaymentCalcItr(wallet);
     }
 
     @Override
     public String toString() {
         StringBuilder sBuilder = new StringBuilder();
 
-        for (CoinStockpile pouch : wallet) {
-            sBuilder.append(pouch.toString());
-            sBuilder.append(' ');
-        }
+        sBuilder.append(wallet.toString());
 
         sBuilder.append(cost);
 
         return sBuilder.toString();
     }
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        String[] coinStockpileStrings = sc.nextLine().split(" ");
-        BigDecimal cost = new BigDecimal(sc.next());
-        sc.close();
-        
-        Pattern pattern = Pattern.compile("\\((\\d+.\\d+|\\d+),(\\d+)\\)");
-        
-        CoinStockpile[] coinStockpiles = new CoinStockpile[coinStockpileStrings.length];
-        int i = 0;
-        for (String coinStockpileString : coinStockpileStrings) {
-            Matcher matcher = pattern.matcher(coinStockpileString);
-            matcher.matches();
-            String value = matcher.group(1);
-            int amount = Integer.parseInt(matcher.group(2));
+    private class TopDownPaymentCalcItr implements Iterator<CoinPile>, IPaymentCalculator {
+        private CoinPile unusedCoinPile;
+        private CoinPile currentCoinPile;
 
-            coinStockpiles[i++] = new CoinStockpile(value, amount);
+        public TopDownPaymentCalcItr(CoinPile coinPile) {
+            unusedCoinPile = new CoinPile(coinPile);
+            currentCoinPile = new CoinPile();
+            start();
         }
 
-        CoinCost coinCost = new CoinCost(coinStockpiles, cost);
+        public void start() {
 
-        Iterator<CoinStockpile[]> payments = coinCost.payments();
-
-        while (payments.hasNext()) {
-            for (CoinStockpile coinStockpile : payments.next()) {
-                System.out.print(coinStockpile.toString() + ' ');
-            }
-            System.out.println();
         }
+
+        @Override
+        public boolean hasNext() {
+            // TODO Auto-generated method stub
+            return false;
+        }
+
+        @Override
+        public CoinPile next() {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public Iterator<CoinPile> payments(CoinPile wallet) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
     }
+
+    private class BottomUpPaymentCalcItr implements Iterator<CoinPile>, IPaymentCalculator {
+
+        @Override
+        public boolean hasNext() {
+            // TODO Auto-generated method stub
+            return false;
+        }
+
+        @Override
+        public CoinPile next() {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public Iterator<CoinPile> payments(CoinPile wallet) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+        
+    }
+
+    // public static void main(String[] args) {
+    //     Scanner sc = new Scanner(System.in);
+    //     String[] coinPileStrings = sc.nextLine().split(" ");
+    //     BigDecimal cost = new BigDecimal(sc.next());
+    //     sc.close();
+        
+    //     Pattern pattern = Pattern.compile("\\((\\d+.\\d+|\\d+),(\\d+)\\)");
+        
+    //     CoinPile coinPiles = new CoinPile[coinPileStrings.length];
+    //     int i = 0;
+    //     for (String coinPileString : coinPileStrings) {
+    //         Matcher matcher = pattern.matcher(coinPileString);
+    //         matcher.matches();
+    //         String value = matcher.group(1);
+    //         int amount = Integer.parseInt(matcher.group(2));
+
+    //         coinPiles[i++] = new CoinPile(value, amount);
+    //     }
+
+    //     CoinCost coinCost = new CoinCost(coinPiles, cost);
+
+    //     Iterator<CoinPile> payments = coinCost.payments();
+
+    //     while (payments.hasNext()) {
+    //         for (CoinPile coinPile : payments.next()) {
+    //             System.out.print(coinPile.toString() + ' ');
+    //         }
+    //         System.out.println();
+    //     }
+    // }
 }
