@@ -48,16 +48,16 @@ public class CoinPile {
         return result;
     }
 
-    public Integer subAmount(BigDecimal key, Integer amount) throws Exception {
-        Integer currentAmount = coinPile.get(key);
+    public Integer subAmount(BigDecimal key, Integer amount) throws RuntimeException {
+        Integer currentAmount = coinPile.containsKey(key) ? coinPile.get(key) : 0;
         if (currentAmount < amount)
-            throw new Exception(); // TODO make custom exception for negative amount
-        return coinPile.replace(key, currentAmount - amount);
+            throw new RuntimeException(); // TODO make custom exception for negative amount
+        return coinPile.put(key, currentAmount - amount);
     }
 
     public Integer addAmount(BigDecimal key, Integer amount) {
-        Integer currentAmount = coinPile.get(key);
-        return coinPile.replace(key, currentAmount + amount);
+        Integer currentAmount = coinPile.containsKey(key) ? coinPile.get(key) : 0;
+        return coinPile.put(key, currentAmount + amount);
     }
 
     public boolean isPileEmpty(BigDecimal key) {
