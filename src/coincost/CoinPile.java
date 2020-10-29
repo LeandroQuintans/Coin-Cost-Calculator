@@ -25,12 +25,22 @@ public class CoinPile {
         return coinPile.get(key);
     }
 
+    public Integer put(BigDecimal key, Integer value) {
+        if (value < 0)
+            throw new RuntimeException(); // TODO make custom exception for negative amount
+        return coinPile.put(key, value);
+    }
+
     public NavigableSet<BigDecimal> descendingKeySet() {
         return coinPile.descendingKeySet();
     }
 
     public Set<BigDecimal> keySet() {
         return coinPile.keySet();
+    }
+
+    public NavigableSet<BigDecimal> navigableKeySet() {
+        return coinPile.navigableKeySet();
     }
     
     public int size() {
