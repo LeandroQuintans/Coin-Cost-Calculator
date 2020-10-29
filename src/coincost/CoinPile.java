@@ -54,10 +54,15 @@ public class CoinPile {
     public BigDecimal getTotal() {
         BigDecimal result = new BigDecimal(0);
         for (BigDecimal key : coinPile.keySet())
-            result.add(key.multiply(new BigDecimal(coinPile.get(key))));
+            result = result.add(getKeyTotal(key));
         return result;
     }
-
+    
+    public Integer addAmount(BigDecimal key, Integer amount) {
+        Integer currentAmount = coinPile.containsKey(key) ? coinPile.get(key) : 0;
+        return coinPile.put(key, currentAmount + amount);
+    }
+    
     public Integer subAmount(BigDecimal key, Integer amount) throws RuntimeException {
         Integer currentAmount = coinPile.containsKey(key) ? coinPile.get(key) : 0;
         if (currentAmount < amount)
@@ -65,13 +70,8 @@ public class CoinPile {
         return coinPile.put(key, currentAmount - amount);
     }
 
-    public Integer addAmount(BigDecimal key, Integer amount) {
-        Integer currentAmount = coinPile.containsKey(key) ? coinPile.get(key) : 0;
-        return coinPile.put(key, currentAmount + amount);
-    }
-
     public boolean isPileEmpty(BigDecimal key) {
-        return coinPile.get(key) == 0;
+        return !coinPile.containsKey(key) || coinPile.get(key) == 0;
     }
 
     @Override
