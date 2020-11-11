@@ -28,6 +28,8 @@ public class CoinPile {
     public Integer put(BigDecimal key, Integer value) {
         if (value < 0)
             throw new RuntimeException(); // TODO make custom exception for negative amount
+        if (value == 0)
+            return coinPile.remove(key);
         return coinPile.put(key, value);
     }
 
