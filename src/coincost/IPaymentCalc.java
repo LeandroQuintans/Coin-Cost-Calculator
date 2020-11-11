@@ -1,7 +1,7 @@
 package coincost;
 
-import java.util.Iterator;
+import java.util.List;
 
 public interface IPaymentCalc {
-    Iterator<CoinPile> payments();
+    public List<CoinPile> payments();
 }

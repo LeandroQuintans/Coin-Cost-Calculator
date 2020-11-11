@@ -1,7 +1,7 @@
 package coincost;
 
 import java.math.BigDecimal;
-import java.util.Iterator;
+import java.util.List;
 
 public class CoinCost {
     private CoinPile wallet;
@@ -20,8 +20,8 @@ public class CoinCost {
         return cost;
     }
 
-    public Iterator<CoinPile> payments() {
-        return new TopDownPaymentCalc(this);
+    public List<CoinPile> payments() {
+        return new TopDownPaymentCalc(this).payments();
     }
 
     @Override
