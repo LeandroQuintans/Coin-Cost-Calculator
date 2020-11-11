@@ -74,6 +74,15 @@ public class CoinPile {
         return !coinPile.containsKey(key) || coinPile.get(key) == 0;
     }
 
+    public Integer emptyPile(BigDecimal key) {
+        return coinPile.remove(key);
+    }
+
+    public void empty() {
+        for (BigDecimal key : keySet())
+            emptyPile(key);
+    }
+
     @Override
     public String toString() {
         return coinPile.toString();
