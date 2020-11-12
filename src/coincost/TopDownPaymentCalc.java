@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 public class TopDownPaymentCalc implements IPaymentCalc {
     private CoinCost cc;
@@ -22,7 +21,7 @@ public class TopDownPaymentCalc implements IPaymentCalc {
     public void start(Iterator<BigDecimal> itr) {
         do {
             BigDecimal key = itr.next();
-            int amount = cc.getCost().subtract(currentCoinPile.getTotal()).divideToIntegralValue(key).intValue();
+            int amount = cc.getCost().subtract(currentCoinPile.getFullTotal()).divideToIntegralValue(key).intValue();
             try {
                 unusedCoinPile.subAmount(key, amount);
             } catch (Exception e) {
@@ -30,7 +29,7 @@ public class TopDownPaymentCalc implements IPaymentCalc {
                 unusedCoinPile.subAmount(key, amount);
             }
             currentCoinPile.addAmount(key, amount);
-        } while (currentCoinPile.getTotal().compareTo(cc.getCost()) < 0 && itr.hasNext());
+        } while (currentCoinPile.getFullTotal().compareTo(cc.getCost()) < 0 && itr.hasNext());
 
         // return currentCoinPile;
     }

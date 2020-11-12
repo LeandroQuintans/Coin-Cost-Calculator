@@ -44,6 +44,10 @@ public class CoinPile {
     public NavigableSet<BigDecimal> navigableKeySet() {
         return coinPile.navigableKeySet();
     }
+
+    // public Collection<Integer> values() {
+    //     return coinPile.values();
+    // }
     
     public int size() {
         return coinPile.size();
@@ -53,11 +57,15 @@ public class CoinPile {
         return key.multiply(new BigDecimal(coinPile.get(key)));
     }
 
-    public BigDecimal getTotal() {
+    public BigDecimal getKeySetTotal(Set<BigDecimal> keySet) {
         BigDecimal result = new BigDecimal(0);
-        for (BigDecimal key : coinPile.keySet())
+        for (BigDecimal key : keySet)
             result = result.add(getKeyTotal(key));
         return result;
+    }
+
+    public BigDecimal getFullTotal() {
+        return getKeySetTotal(coinPile.keySet());
     }
     
     public Integer addAmount(BigDecimal key, Integer amount) {
@@ -87,5 +95,18 @@ public class CoinPile {
     public String toString() {
         return coinPile.toString();
     }
+
+    // @Override
+    // public boolean equals(Object other) {
+    //     if (other == this) return true;
+    //     if (other == null) return false;
+    //     if (getClass() != other.getClass()) return false;
+    //     CoinPile that = (CoinPile) other;
+
+    //     Collection<Integer> thisValues = this.coinPile.values();
+    //     Collection<Integer> thatValues = that.coinPile.values();
+
+    //     return this.coinPile.equals(that.coinPile) && thisValues.equals(thatValues); // doesn't work, find way to see if 2 collections are equal
+    // }
 
 }

@@ -39,9 +39,9 @@ public class CoinPileUnitTests {
     }
 
     @Test
-    public void getTotalTest() {
+    public void getFullTotalTest() {
         BigDecimal expected = new BigDecimal("4.40");
-        BigDecimal actual = cp.getTotal();
+        BigDecimal actual = cp.getFullTotal();
 
         assertEquals(expected, actual);
     }
