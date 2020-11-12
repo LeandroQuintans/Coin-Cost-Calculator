@@ -54,12 +54,25 @@ public class TopDownPaymentCalc implements IPaymentCalc {
     }
 
     @Override
-    public List<CoinPile> payments() {
-        start(unusedCoinPile.keySet().iterator());
-        payments.add(new CoinPile(currentCoinPile));
-
-        // while (next(cpKeySet.iterator()))
-
+    public List<CoinPile> payments() { //REFACTOR
+        start(cc.getWallet().descendingKeySet().iterator());
+        
+        Set<BigDecimal> unprocessedKeys = cc.getWallet().descendingKeySet();
+        BigDecimal currentKey;
+        do {
+            payments.add(new CoinPile(currentCoinPile));
+            Iterator<BigDecimal> unusedCPItr;
+            currentKey = unprocessedKeys.iterator().next();
+            unusedCPItr = prepare(currentKey);
+            while (unusedCPItr == null && unprocessedKeys.size() > 1) {
+                unprocessedKeys.remove(currentKey);
+                currentKey = unprocessedKeys.iterator().next();
+                unusedCPItr = prepare(currentKey);
+            }
+            if (unusedCPItr == null)
+                break;
+            start(unusedCPItr);
+        } while (true); // problem
 
         return payments;
     }
