@@ -55,7 +55,7 @@ public class TopDownPaymentCalc implements IPaymentCalc {
     }
 
     @Override
-    public List<CoinPile> payments() { // needs testing for when there's not enough money for the first payment, and when you can't get an exact cost
+    public List<CoinPile> payments() { // TODO handling not enough money and when you can't get exact cost
         start(cc.getWallet().descendingKeySet().iterator());
         payments.add(new CoinPile(currentCoinPile));
         
