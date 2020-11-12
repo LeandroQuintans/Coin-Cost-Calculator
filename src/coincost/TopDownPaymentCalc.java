@@ -31,16 +31,14 @@ public class TopDownPaymentCalc implements IPaymentCalc {
             }
             currentCoinPile.addAmount(key, amount);
         } while (currentCoinPile.getFullTotal().compareTo(cc.getCost()) < 0 && itr.hasNext());
-
-        // return currentCoinPile;
     }
 
-    private Iterator<BigDecimal> prepare(BigDecimal key) {
+    private Iterator<BigDecimal> prepare(BigDecimal key) throws CoinDownsizeImpossibleException {
         Set<BigDecimal> keySet = unusedCoinPile.keySet();
         keySet.removeIf(x -> x.compareTo(key) >= 0);
 
         if (unusedCoinPile.getKeySetTotal(keySet).compareTo(key) < 0)
-            return null;
+            throw new CoinDownsizeImpossibleException();
 
         currentCoinPile.subAmount(key, 1);
         unusedCoinPile.addAmount(key, 1);
@@ -63,13 +61,14 @@ public class TopDownPaymentCalc implements IPaymentCalc {
         Iterator<BigDecimal> unusedCPItr;
         do {
             currentKey = unprocessedKeys.iterator().next();
-            unusedCPItr = prepare(currentKey);
-            if (unusedCPItr != null) {
+            try {
+                unusedCPItr = prepare(currentKey);
                 start(unusedCPItr);
                 payments.add(new CoinPile(currentCoinPile));
             }
-            else
+            catch (CoinDownsizeImpossibleException e) {
                 unprocessedKeys.remove(currentKey);
+            }
         } while(unprocessedKeys.size() > 1);
 
         return payments;
