@@ -2,6 +2,9 @@ package coincost;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Scanner;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 public class CoinCost {
     private CoinPile wallet;
@@ -33,5 +36,29 @@ public class CoinCost {
         sBuilder.append(cost);
 
         return sBuilder.toString();
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String[] coinPileStrings = sc.nextLine().split(" ");
+        BigDecimal cost = new BigDecimal(sc.next());
+        sc.close();
+        
+        Pattern pattern = Pattern.compile("\\((\\d+.\\d+|\\d+),(\\d+)\\)");
+        
+        CoinPile coinPiles = new CoinPile();
+        for (String coinPileString : coinPileStrings) {
+            Matcher matcher = pattern.matcher(coinPileString);
+            matcher.matches();
+            BigDecimal value = new BigDecimal(matcher.group(1));
+            int amount = Integer.parseInt(matcher.group(2));
+
+            coinPiles.put(value, amount);
+        }
+
+        CoinCost coinCost = new CoinCost(coinPiles, cost);
+        List<CoinPile> payments = coinCost.payments();
+        for (CoinPile payment : payments)
+            System.out.println(payment);
     }
 }
