@@ -18,7 +18,7 @@ public class TopDownPaymentCalc implements IPaymentCalc {
         payments = new LinkedList<>();
     }
 
-    public void start(Iterator<BigDecimal> itr) {
+    private void start(Iterator<BigDecimal> itr) {
         do {
             BigDecimal key = itr.next();
             int amount = cc.getCost().subtract(currentCoinPile.getFullTotal()).divideToIntegralValue(key).intValue();
