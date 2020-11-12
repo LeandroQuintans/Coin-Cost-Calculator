@@ -1,4 +1,4 @@
-package coincost;
+package coincost.exceptions;
 
 public class CoinDownsizeImpossibleException extends Exception {
 

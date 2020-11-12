@@ -6,6 +6,8 @@ import java.util.NavigableSet;
 import java.util.Set;
 import java.util.TreeMap;
 
+import coincost.exceptions.NegativeCoinAmountException;
+
 public class CoinPile {
     private TreeMap<BigDecimal, Integer> coinPile;
 
@@ -27,7 +29,7 @@ public class CoinPile {
 
     public Integer put(BigDecimal key, Integer value) {
         if (value < 0)
-            throw new RuntimeException(); // TODO make custom exception for negative amount
+            throw new NegativeCoinAmountException();
         if (value == 0)
             return coinPile.remove(key);
         return coinPile.put(key, value);

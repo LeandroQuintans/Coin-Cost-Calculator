@@ -6,6 +6,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import coincost.exceptions.CoinDownsizeImpossibleException;
+import coincost.exceptions.NegativeCoinAmountException;
+
 public class TopDownPaymentCalc implements IPaymentCalc {
     private CoinCost cc;
     private CoinPile unusedCoinPile;
@@ -25,7 +28,7 @@ public class TopDownPaymentCalc implements IPaymentCalc {
             int amount = cc.getCost().subtract(currentCoinPile.getFullTotal()).divideToIntegralValue(key).intValue();
             try {
                 unusedCoinPile.subAmount(key, amount);
-            } catch (Exception e) {
+            } catch (NegativeCoinAmountException e) {
                 amount = unusedCoinPile.get(key);
                 unusedCoinPile.subAmount(key, amount);
             }

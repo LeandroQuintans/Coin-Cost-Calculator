@@ -10,6 +10,7 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 import coincost.CoinPile;
+import coincost.exceptions.NegativeCoinAmountException;
 
 public class CoinPileUnitTests {
     private CoinPile cp = new CoinPile(Map.of(
@@ -83,7 +84,7 @@ public class CoinPileUnitTests {
     public void subAmountTest2() {
         BigDecimal key = new BigDecimal("0.30");
         
-        assertThrows(RuntimeException.class, () -> cp.subAmount(key, 3));
+        assertThrows(NegativeCoinAmountException.class, () -> cp.subAmount(key, 3));
     }
 
     @Test
