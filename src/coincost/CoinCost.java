@@ -1,8 +1,8 @@
 package coincost;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
@@ -23,7 +23,7 @@ public class CoinCost {
         return cost;
     }
 
-    public List<CoinPile> payments() {
+    public Set<CoinPile> payments() {
         return new TopDownPaymentCalc(this).payments();
     }
 
@@ -57,7 +57,7 @@ public class CoinCost {
         }
 
         CoinCost coinCost = new CoinCost(coinPiles, cost);
-        List<CoinPile> payments = coinCost.payments();
+        Set<CoinPile> payments = coinCost.payments();
         for (CoinPile payment : payments)
             System.out.println(payment);
     }

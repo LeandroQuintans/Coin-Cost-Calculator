@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
@@ -91,7 +92,7 @@ public class TopDownPaymentCalcUnitTests {
             )
         );
 
-        List<CoinPile> actual = tdpc.payments();
+        Set<CoinPile> actual = tdpc.payments();
 
         assertEquals(expected.toString(), actual.toString());
     }

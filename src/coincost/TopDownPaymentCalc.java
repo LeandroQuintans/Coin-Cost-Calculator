@@ -1,9 +1,8 @@
 package coincost;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 import coincost.exceptions.CoinDownsizeImpossibleException;
@@ -13,13 +12,13 @@ public class TopDownPaymentCalc implements IPaymentCalc {
     private CoinCost cc;
     private CoinPile unusedCoinPile;
     private CoinPile currentCoinPile;
-    private List<CoinPile> payments;
+    private Set<CoinPile> payments;
 
     public TopDownPaymentCalc(CoinCost cc) {
         this.cc = cc;
         unusedCoinPile = new CoinPile(cc.getWallet());
         currentCoinPile = new CoinPile();
-        payments = new LinkedList<>();
+        payments = new HashSet<>();
     }
 
     private void start(Iterator<BigDecimal> itr) {
@@ -55,7 +54,7 @@ public class TopDownPaymentCalc implements IPaymentCalc {
     }
 
     @Override
-    public List<CoinPile> payments() { // TODO handling not enough money and when you can't get exact cost
+    public Set<CoinPile> payments() { // TODO handling not enough money and when you can't get exact cost
         start(cc.getWallet().descendingKeySet().iterator());
         payments.add(new CoinPile(currentCoinPile));
         
