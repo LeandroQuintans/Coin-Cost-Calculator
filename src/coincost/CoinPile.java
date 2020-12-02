@@ -98,7 +98,8 @@ public class CoinPile {
         return coinPile.toString();
     }
 
-    // @Override
+    // TODO Implement a working equals
+    // @Override 
     // public boolean equals(Object other) {
     //     if (other == this) return true;
     //     if (other == null) return false;

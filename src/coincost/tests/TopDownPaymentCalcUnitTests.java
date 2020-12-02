@@ -45,7 +45,7 @@ public class TopDownPaymentCalcUnitTests {
     // }
 
     @Test
-    public void paymentsTest() {
+    public void paymentsTest() { // FIXME test no longer works, CoinPile.equals() needed
         List<CoinPile> expected = List.of(
             new CoinPile(
                 Map.of(
@@ -94,7 +94,7 @@ public class TopDownPaymentCalcUnitTests {
 
         Set<CoinPile> actual = tdpc.payments();
 
-        assertEquals(expected.toString(), actual.toString());
+        assertEquals(expected, actual);
     }
 
 }
