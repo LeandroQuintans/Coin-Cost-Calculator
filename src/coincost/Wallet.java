@@ -24,7 +24,7 @@ public class Wallet {
     }
 
     public Integer get(BigDecimal key) {
-        return wallet.get(key);
+        return wallet.containsKey(key) ? wallet.get(key) : 0;
     }
 
     public Integer put(BigDecimal key, Integer value) {
@@ -71,11 +71,11 @@ public class Wallet {
         return wallet.lastKey();
     }
 
-    public Wallet headMap(BigDecimal toKey, boolean inclusive) {
+    public Wallet headWallet(BigDecimal toKey, boolean inclusive) {
         return new Wallet(wallet.headMap(toKey, inclusive));
     }
 
-    public Wallet headMap(BigDecimal toKey) {
+    public Wallet headWallet(BigDecimal toKey) {
         return new Wallet(wallet.headMap(toKey));
     }
 
@@ -87,11 +87,11 @@ public class Wallet {
         return new Wallet(wallet.subMap(fromKey, toKey));
     }
 
-    public Wallet tailMap(BigDecimal fromKey, boolean inclusive) {
+    public Wallet tailWallet(BigDecimal fromKey, boolean inclusive) {
         return new Wallet(wallet.tailMap(fromKey, inclusive));
     }
 
-    public Wallet tailMap(BigDecimal fromKey) {
+    public Wallet tailWallet(BigDecimal fromKey) {
         return new Wallet(wallet.tailMap(fromKey));
     }
 
@@ -135,7 +135,7 @@ public class Wallet {
 
     public Wallet subtract(Wallet other) throws NegativeCoinAmountException { // TODO needs test
         Wallet result = new Wallet();
-        for (BigDecimal key : other.keySet()) {
+        for (BigDecimal key : this.keySet()) {
             int amount = this.get(key) - other.get(key);
             if (amount < 0)
                 throw new NegativeCoinAmountException();
