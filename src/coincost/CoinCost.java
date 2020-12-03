@@ -7,15 +7,15 @@ import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
 public class CoinCost {
-    private CoinPile wallet;
+    private Wallet wallet;
     private BigDecimal cost;
 
-    public CoinCost(CoinPile wallet, BigDecimal cost) {
-        this.wallet = new CoinPile(wallet);
+    public CoinCost(Wallet wallet, BigDecimal cost) {
+        this.wallet = new Wallet(wallet);
         this.cost = new BigDecimal(cost.toString());
     }
 
-    public CoinPile getWallet() {
+    public Wallet getWallet() {
         return wallet;
     }
 
@@ -23,7 +23,7 @@ public class CoinCost {
         return cost;
     }
 
-    public Set<CoinPile> payments() {
+    public Set<Wallet> payments() {
         return new TopDownPaymentCalc(this).payments();
     }
 
@@ -46,7 +46,7 @@ public class CoinCost {
         
         Pattern pattern = Pattern.compile("\\((\\d+.\\d+|\\d+),(\\d+)\\)");
         
-        CoinPile coinPiles = new CoinPile();
+        Wallet coinPiles = new Wallet();
         for (String coinPileString : coinPileStrings) {
             Matcher matcher = pattern.matcher(coinPileString);
             matcher.matches();
@@ -57,8 +57,8 @@ public class CoinCost {
         }
 
         CoinCost coinCost = new CoinCost(coinPiles, cost);
-        Set<CoinPile> payments = coinCost.payments();
-        for (CoinPile payment : payments)
+        Set<Wallet> payments = coinCost.payments();
+        for (Wallet payment : payments)
             System.out.println(payment);
     }
 }

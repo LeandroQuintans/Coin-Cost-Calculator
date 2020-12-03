@@ -8,18 +8,18 @@ import java.util.TreeMap;
 
 import coincost.exceptions.NegativeCoinAmountException;
 
-public class CoinPile {
+public class Wallet {
     private TreeMap<BigDecimal, Integer> coinPile;
 
-    public CoinPile() {
+    public Wallet() {
         coinPile = new TreeMap<BigDecimal, Integer>();
     }
 
-    public CoinPile(Map<? extends BigDecimal, ? extends Integer> m) {
+    public Wallet(Map<? extends BigDecimal, ? extends Integer> m) {
         coinPile = new TreeMap<BigDecimal, Integer>(m);
     }
 
-    public CoinPile(CoinPile cp) {
+    public Wallet(Wallet cp) {
         coinPile = new TreeMap<BigDecimal, Integer>(cp.coinPile);
     }
 

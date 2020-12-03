@@ -9,11 +9,11 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
-import coincost.CoinPile;
+import coincost.Wallet;
 import coincost.exceptions.NegativeCoinAmountException;
 
-public class CoinPileUnitTests {
-    private CoinPile cp = new CoinPile(Map.of(
+public class WalletUnitTests {
+    private Wallet wallet = new Wallet(Map.of(
         new BigDecimal("1.00"), 1,
         new BigDecimal("0.50"), 5,
         new BigDecimal("0.20"), 2,
@@ -26,7 +26,7 @@ public class CoinPileUnitTests {
     @Test
     public void getKeyTotalTest1() {
         BigDecimal expected = new BigDecimal("2.50");
-        BigDecimal actual = cp.getKeyTotal(new BigDecimal("0.50"));
+        BigDecimal actual = wallet.getKeyTotal(new BigDecimal("0.50"));
 
         assertEquals(expected, actual);
     }
@@ -34,7 +34,7 @@ public class CoinPileUnitTests {
     @Test
     public void getKeyTotalTest2() {
         BigDecimal expected = new BigDecimal("0.10");
-        BigDecimal actual = cp.getKeyTotal(new BigDecimal("0.05"));
+        BigDecimal actual = wallet.getKeyTotal(new BigDecimal("0.05"));
 
         assertEquals(expected, actual);
     }
@@ -42,7 +42,7 @@ public class CoinPileUnitTests {
     @Test
     public void getFullTotalTest() {
         BigDecimal expected = new BigDecimal("4.40");
-        BigDecimal actual = cp.getFullTotal();
+        BigDecimal actual = wallet.getFullTotal();
 
         assertEquals(expected, actual);
     }
@@ -52,8 +52,8 @@ public class CoinPileUnitTests {
         Integer expected = 4;
 
         BigDecimal key = new BigDecimal("0.20");
-        cp.addAmount(key, 2);
-        Integer actual = cp.get(key);
+        wallet.addAmount(key, 2);
+        Integer actual = wallet.get(key);
 
         assertEquals(expected, actual);
     }
@@ -63,8 +63,8 @@ public class CoinPileUnitTests {
         Integer expected = 3;
 
         BigDecimal key = new BigDecimal("2.00");
-        cp.addAmount(key, 3);
-        Integer actual = cp.get(key);
+        wallet.addAmount(key, 3);
+        Integer actual = wallet.get(key);
 
         assertEquals(expected, actual);
     }
@@ -74,8 +74,8 @@ public class CoinPileUnitTests {
         Integer expected = 1;
 
         BigDecimal key = new BigDecimal("0.10");
-        cp.subAmount(key, 2);
-        Integer actual = cp.get(key);
+        wallet.subAmount(key, 2);
+        Integer actual = wallet.get(key);
 
         assertEquals(expected, actual);
     }
@@ -84,30 +84,30 @@ public class CoinPileUnitTests {
     public void subAmountTest2() {
         BigDecimal key = new BigDecimal("0.30");
         
-        assertThrows(NegativeCoinAmountException.class, () -> cp.subAmount(key, 3));
+        assertThrows(NegativeCoinAmountException.class, () -> wallet.subAmount(key, 3));
     }
 
     @Test
     public void subAmountTest3() {
         BigDecimal key = new BigDecimal("0.20");
         
-        assertThrows(RuntimeException.class, () -> cp.subAmount(key, 3));
+        assertThrows(RuntimeException.class, () -> wallet.subAmount(key, 3));
     }
 
     @Test
     public void isPileEmptyTest1() {
         BigDecimal key = new BigDecimal("0.30");
 
-        assertTrue(cp.isPileEmpty(key));
+        assertTrue(wallet.isPileEmpty(key));
     }
 
     @Test
     public void isPileEmptyTest2() {
         BigDecimal key = new BigDecimal("0.20");
 
-        cp.put(key, 0);
+        wallet.put(key, 0);
 
-        assertTrue(cp.isPileEmpty(key));
+        assertTrue(wallet.isPileEmpty(key));
     }
 
 }

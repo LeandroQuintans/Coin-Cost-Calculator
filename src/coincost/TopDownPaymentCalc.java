@@ -10,14 +10,14 @@ import coincost.exceptions.NegativeCoinAmountException;
 
 public class TopDownPaymentCalc implements IPaymentCalc {
     private CoinCost cc;
-    private CoinPile unusedCoinPile;
-    private CoinPile currentCoinPile;
-    private Set<CoinPile> payments;
+    private Wallet unusedCoinPile;
+    private Wallet currentCoinPile;
+    private Set<Wallet> payments;
 
     public TopDownPaymentCalc(CoinCost cc) {
         this.cc = cc;
-        unusedCoinPile = new CoinPile(cc.getWallet());
-        currentCoinPile = new CoinPile();
+        unusedCoinPile = new Wallet(cc.getWallet());
+        currentCoinPile = new Wallet();
         payments = new HashSet<>();
     }
 
@@ -45,7 +45,7 @@ public class TopDownPaymentCalc implements IPaymentCalc {
         currentCoinPile.subAmount(key, 1);
         unusedCoinPile.addAmount(key, 1);
 
-        Iterator<BigDecimal> result = new CoinPile(unusedCoinPile).descendingKeySet().iterator();
+        Iterator<BigDecimal> result = new Wallet(unusedCoinPile).descendingKeySet().iterator();
         BigDecimal nextKey = result.next();
         while (nextKey.compareTo(key) > 0 && result.hasNext())
             nextKey = result.next();
@@ -54,9 +54,9 @@ public class TopDownPaymentCalc implements IPaymentCalc {
     }
 
     @Override
-    public Set<CoinPile> payments() { // TODO handling not enough money and when you can't get exact cost
+    public Set<Wallet> payments() { // TODO handling not enough money and when you can't get exact cost
         start(cc.getWallet().descendingKeySet().iterator());
-        payments.add(new CoinPile(currentCoinPile));
+        payments.add(new Wallet(currentCoinPile));
         
         Set<BigDecimal> unprocessedKeys = cc.getWallet().descendingKeySet();
         BigDecimal currentKey;
@@ -66,7 +66,7 @@ public class TopDownPaymentCalc implements IPaymentCalc {
             try {
                 unusedCPItr = prepare(currentKey);
                 start(unusedCPItr);
-                payments.add(new CoinPile(currentCoinPile));
+                payments.add(new Wallet(currentCoinPile));
             }
             catch (CoinDownsizeImpossibleException e) {
                 unprocessedKeys.remove(currentKey);

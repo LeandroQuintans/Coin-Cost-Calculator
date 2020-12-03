@@ -10,12 +10,12 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 import coincost.CoinCost;
-import coincost.CoinPile;
+import coincost.Wallet;
 import coincost.TopDownPaymentCalc;
 
 public class TopDownPaymentCalcUnitTests {
     private CoinCost cc = new CoinCost(
-        new CoinPile(Map.of(
+        new Wallet(Map.of(
             new BigDecimal("1.00"), 1,
             new BigDecimal("0.50"), 5,
             new BigDecimal("0.20"), 2,
@@ -46,8 +46,8 @@ public class TopDownPaymentCalcUnitTests {
 
     @Test
     public void paymentsTest() { // FIXME test no longer works, CoinPile.equals() needed
-        List<CoinPile> expected = List.of(
-            new CoinPile(
+        List<Wallet> expected = List.of(
+            new Wallet(
                 Map.of(
                     new BigDecimal("1.00"), 1,
                     new BigDecimal("0.50"), 3,
@@ -55,14 +55,14 @@ public class TopDownPaymentCalcUnitTests {
                     new BigDecimal("0.02"), 2
                 )
             ),
-            new CoinPile(
+            new Wallet(
                 Map.of(
                     new BigDecimal("0.50"), 5,
                     new BigDecimal("0.05"), 1,
                     new BigDecimal("0.02"), 2
                 )
             ),
-            new CoinPile(
+            new Wallet(
                 Map.of(
                     new BigDecimal("0.50"), 4,
                     new BigDecimal("0.20"), 2,
@@ -71,7 +71,7 @@ public class TopDownPaymentCalcUnitTests {
                     new BigDecimal("0.02"), 2
                 )
             ),
-            new CoinPile(
+            new Wallet(
                 Map.of(
                     new BigDecimal("0.50"), 4,
                     new BigDecimal("0.20"), 1,
@@ -80,7 +80,7 @@ public class TopDownPaymentCalcUnitTests {
                     new BigDecimal("0.02"), 2
                 )
             ),
-            new CoinPile(
+            new Wallet(
                 Map.of(
                     new BigDecimal("0.50"), 4,
                     new BigDecimal("0.20"), 1,
@@ -92,7 +92,7 @@ public class TopDownPaymentCalcUnitTests {
             )
         );
 
-        Set<CoinPile> actual = tdpc.payments();
+        Set<Wallet> actual = tdpc.payments();
 
         assertEquals(expected, actual);
     }
