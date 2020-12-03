@@ -5,19 +5,72 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import coincost.exceptions.NegativeCoinAmountException;
+
 public class AllPaymentCalc implements IPaymentCalc {
     private CoinCost cc;
+    // private Wallet unusedCoinsWallet;
     private Set<Wallet> payments;
 
     public AllPaymentCalc(CoinCost cc) {
         this.cc = cc;
+        // unusedCoinsWallet = new Wallet(cc.getWallet());
         payments = new HashSet<>();
     }
 
+    public int fillPayment(Wallet payment, Iterator<BigDecimal> vals) {
+        Wallet unusedCoinsWallet = cc.getWallet().subtract(payment);
+        while (vals.hasNext()) {
+            BigDecimal walletVal = vals.next();
+            int amount = cc.getCost().subtract(payment.getFullTotal()).divideToIntegralValue(walletVal).intValue();
+            try {
+                unusedCoinsWallet.subAmount(walletVal, amount);
+            } catch (NegativeCoinAmountException e) {
+                amount = unusedCoinsWallet.get(walletVal);
+                unusedCoinsWallet.subAmount(walletVal, amount);
+            }
+            payment.addAmount(walletVal, amount);
+
+            if (payment.getFullTotal().equals(cc.getCost()))
+                break;
+        }
+        return payment.getFullTotal().compareTo(cc.getCost());
+    }
+
+    public void paymentDecomposition(Wallet payment, BigDecimal val) {
+        // Wallet nextPayment = null;
+        // while (nextPayment != null) {
+            // nextPayment = null;
+        Set<BigDecimal> vals = cc.getWallet().headWallet(val).descendingKeySet();
+        
+        // while (!payment.isPileEmpty(val))
+        //     val = payment.lowerKey(val);
+
+        Wallet nextPayment = new Wallet(payment);
+        nextPayment.subAmount(val, 1);
+        if (fillPayment(nextPayment, vals.iterator()) >= 0) {
+            payments.add(nextPayment);
+            paymentDecomposition(new Wallet(payment), val);
+        }
+        else {
+            
+        }
+                // if (!nextVal.equals(cc.getWallet().firstKey()))
+        // }
+        
+    }
+
     @Override
-    public Set<CoinPile> payments() {
-        // TODO Auto-generated method stub
-        return null;
+    public Set<Wallet> payments() {
+        Wallet firstPayment = new Wallet();
+        fillPayment(firstPayment, cc.getWallet().descendingKeySet().iterator());
+        payments.add(firstPayment);
+
+        Wallet nextPayment = new Wallet(firstPayment);
+        paymentDecomposition(nextPayment, nextPayment.firstKey());
+
+
+        return payments;
     }
     
 }
