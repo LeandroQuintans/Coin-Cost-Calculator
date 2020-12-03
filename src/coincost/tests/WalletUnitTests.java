@@ -110,4 +110,19 @@ public class WalletUnitTests {
         assertTrue(wallet.isPileEmpty(key));
     }
 
+    @Test
+    public void isEquals1() {
+        Wallet otherWallet = new Wallet(Map.of(
+            new BigDecimal("1.00"), 1,
+            new BigDecimal("0.50"), 5,
+            new BigDecimal("0.20"), 2,
+            new BigDecimal("0.10"), 3,
+            new BigDecimal("0.05"), 2,
+            new BigDecimal("0.02"), 4,
+            new BigDecimal("0.01"), 2
+        ));
+
+        assertTrue(wallet.equals(otherWallet));
+    }
+
 }

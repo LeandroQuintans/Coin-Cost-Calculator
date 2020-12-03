@@ -150,18 +150,14 @@ public class Wallet {
         return wallet.toString();
     }
 
-    // TODO Implement a working equals
-    // @Override 
-    // public boolean equals(Object other) {
-    //     if (other == this) return true;
-    //     if (other == null) return false;
-    //     if (getClass() != other.getClass()) return false;
-    //     wallet that = (wallet) other;
+    @Override 
+    public boolean equals(Object other) {
+        if (other == this) return true;
+        if (other == null) return false;
+        if (getClass() != other.getClass()) return false;
+        Wallet that = (Wallet) other;
 
-    //     Collection<Integer> thisValues = this.wallet.values();
-    //     Collection<Integer> thatValues = that.wallet.values();
-
-    //     return this.wallet.equals(that.wallet) && thisValues.equals(thatValues); // doesn't work, find way to see if 2 collections are equal
-    // }
+        return this.wallet.equals(that.wallet);
+    }
 
 }
