@@ -3,7 +3,6 @@ package coincost.tests;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -45,8 +44,8 @@ public class TopDownPaymentCalcUnitTests {
     // }
 
     @Test
-    public void paymentsTest() { // FIXME test no longer works, CoinPile.equals() needed
-        List<Wallet> expected = List.of(
+    public void paymentsTest() {
+        Set<Wallet> expected = Set.of(
             new Wallet(
                 Map.of(
                     new BigDecimal("1.00"), 1,
