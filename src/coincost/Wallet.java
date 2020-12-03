@@ -59,8 +59,8 @@ public class Wallet {
         return wallet.firstKey();
     }
 
-    public BigDecimal floorKey(BigDecimal key) {
-        return wallet.floorKey(key);
+    public BigDecimal lowerKey(BigDecimal key) {
+        return wallet.lowerKey(key);
     }
 
     public BigDecimal higherKey(BigDecimal key) {
