@@ -9,54 +9,94 @@ import java.util.TreeMap;
 import coincost.exceptions.NegativeCoinAmountException;
 
 public class Wallet {
-    private TreeMap<BigDecimal, Integer> coinPile;
+    private TreeMap<BigDecimal, Integer> wallet;
 
     public Wallet() {
-        coinPile = new TreeMap<BigDecimal, Integer>();
+        wallet = new TreeMap<BigDecimal, Integer>();
     }
 
     public Wallet(Map<? extends BigDecimal, ? extends Integer> m) {
-        coinPile = new TreeMap<BigDecimal, Integer>(m);
+        wallet = new TreeMap<BigDecimal, Integer>(m);
     }
 
     public Wallet(Wallet cp) {
-        coinPile = new TreeMap<BigDecimal, Integer>(cp.coinPile);
+        wallet = new TreeMap<BigDecimal, Integer>(cp.wallet);
     }
 
     public Integer get(BigDecimal key) {
-        return coinPile.get(key);
+        return wallet.get(key);
     }
 
     public Integer put(BigDecimal key, Integer value) {
         if (value < 0)
             throw new NegativeCoinAmountException();
         if (value == 0)
-            return coinPile.remove(key);
-        return coinPile.put(key, value);
+            return wallet.remove(key);
+        return wallet.put(key, value);
     }
 
     public NavigableSet<BigDecimal> descendingKeySet() {
-        return coinPile.descendingKeySet();
+        return wallet.descendingKeySet();
     }
 
     public Set<BigDecimal> keySet() {
-        return coinPile.keySet();
+        return wallet.keySet();
     }
 
     public NavigableSet<BigDecimal> navigableKeySet() {
-        return coinPile.navigableKeySet();
+        return wallet.navigableKeySet();
     }
 
     // public Collection<Integer> values() {
-    //     return coinPile.values();
+    //     return wallet.values();
     // }
     
     public int size() {
-        return coinPile.size();
+        return wallet.size();
+    }
+
+    public BigDecimal firstKey() {
+        return wallet.firstKey();
+    }
+
+    public BigDecimal floorKey(BigDecimal key) {
+        return wallet.floorKey(key);
+    }
+
+    public BigDecimal higherKey(BigDecimal key) {
+        return wallet.higherKey(key);
+    }
+
+    public BigDecimal lastKey() {
+        return wallet.lastKey();
+    }
+
+    public Wallet headMap(BigDecimal toKey, boolean inclusive) {
+        return new Wallet(wallet.headMap(toKey, inclusive));
+    }
+
+    public Wallet headMap(BigDecimal toKey) {
+        return new Wallet(wallet.headMap(toKey));
+    }
+
+    public Wallet subWallet(BigDecimal fromKey, boolean fromInclusive, BigDecimal toKey, boolean toInclusive) {
+        return new Wallet(wallet.subMap(fromKey, fromInclusive, toKey, toInclusive));
+    }
+
+    public Wallet subWallet(BigDecimal fromKey, BigDecimal toKey) {
+        return new Wallet(wallet.subMap(fromKey, toKey));
+    }
+
+    public Wallet tailMap(BigDecimal fromKey, boolean inclusive) {
+        return new Wallet(wallet.tailMap(fromKey, inclusive));
+    }
+
+    public Wallet tailMap(BigDecimal fromKey) {
+        return new Wallet(wallet.tailMap(fromKey));
     }
 
     public BigDecimal getKeyTotal(BigDecimal key) {
-        return key.multiply(new BigDecimal(coinPile.get(key)));
+        return key.multiply(new BigDecimal(wallet.get(key)));
     }
 
     public BigDecimal getKeySetTotal(Set<BigDecimal> keySet) {
@@ -67,25 +107,25 @@ public class Wallet {
     }
 
     public BigDecimal getFullTotal() {
-        return getKeySetTotal(coinPile.keySet());
+        return getKeySetTotal(wallet.keySet());
     }
     
     public Integer addAmount(BigDecimal key, Integer amount) {
-        Integer currentAmount = coinPile.containsKey(key) ? coinPile.get(key) : 0;
+        Integer currentAmount = wallet.containsKey(key) ? wallet.get(key) : 0;
         return put(key, currentAmount + amount);
     }
     
     public Integer subAmount(BigDecimal key, Integer amount) throws RuntimeException {
-        Integer currentAmount = coinPile.containsKey(key) ? coinPile.get(key) : 0;
+        Integer currentAmount = wallet.containsKey(key) ? wallet.get(key) : 0;
         return put(key, currentAmount - amount);
     }
 
     public boolean isPileEmpty(BigDecimal key) {
-        return !coinPile.containsKey(key) || coinPile.get(key) == 0;
+        return !wallet.containsKey(key) || wallet.get(key) == 0;
     }
 
     public Integer emptyPile(BigDecimal key) {
-        return coinPile.remove(key);
+        return wallet.remove(key);
     }
 
     public void empty() {
@@ -93,9 +133,21 @@ public class Wallet {
             emptyPile(key);
     }
 
+    public Wallet subtract(Wallet other) throws NegativeCoinAmountException { // TODO needs test
+        Wallet result = new Wallet();
+        for (BigDecimal key : other.keySet()) {
+            int amount = this.get(key) - other.get(key);
+            if (amount < 0)
+                throw new NegativeCoinAmountException();
+            result.put(key, amount);
+        }
+
+        return result;
+    }
+
     @Override
     public String toString() {
-        return coinPile.toString();
+        return wallet.toString();
     }
 
     // TODO Implement a working equals
@@ -104,12 +156,12 @@ public class Wallet {
     //     if (other == this) return true;
     //     if (other == null) return false;
     //     if (getClass() != other.getClass()) return false;
-    //     CoinPile that = (CoinPile) other;
+    //     wallet that = (wallet) other;
 
-    //     Collection<Integer> thisValues = this.coinPile.values();
-    //     Collection<Integer> thatValues = that.coinPile.values();
+    //     Collection<Integer> thisValues = this.wallet.values();
+    //     Collection<Integer> thatValues = that.wallet.values();
 
-    //     return this.coinPile.equals(that.coinPile) && thisValues.equals(thatValues); // doesn't work, find way to see if 2 collections are equal
+    //     return this.wallet.equals(that.wallet) && thisValues.equals(thatValues); // doesn't work, find way to see if 2 collections are equal
     // }
 
 }
