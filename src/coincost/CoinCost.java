@@ -24,7 +24,7 @@ public class CoinCost {
     }
 
     public Set<Wallet> payments() {
-        return new TopDownPaymentCalc(this).payments();
+        return new AllPaymentCalc(this).payments();
     }
 
     @Override

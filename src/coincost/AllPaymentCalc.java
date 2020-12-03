@@ -7,14 +7,13 @@ import java.util.Set;
 
 import coincost.exceptions.NegativeCoinAmountException;
 
+
 public class AllPaymentCalc implements IPaymentCalc {
     private CoinCost cc;
-    // private Wallet unusedCoinsWallet;
     private Set<Wallet> payments;
 
     public AllPaymentCalc(CoinCost cc) {
         this.cc = cc;
-        // unusedCoinsWallet = new Wallet(cc.getWallet());
         payments = new HashSet<>();
     }
 
@@ -38,26 +37,21 @@ public class AllPaymentCalc implements IPaymentCalc {
     }
 
     public void paymentDecomposition(Wallet payment, BigDecimal val) {
-        // Wallet nextPayment = null;
-        // while (nextPayment != null) {
-            // nextPayment = null;
-        Set<BigDecimal> vals = cc.getWallet().headWallet(val).descendingKeySet();
-        
-        // while (!payment.isPileEmpty(val))
-        //     val = payment.lowerKey(val);
-
-        Wallet nextPayment = new Wallet(payment);
-        nextPayment.subAmount(val, 1);
-        if (fillPayment(nextPayment, vals.iterator()) >= 0) {
-            payments.add(nextPayment);
-            paymentDecomposition(new Wallet(payment), val);
-        }
-        else {
+        while (val != null) {
+            Set<BigDecimal> vals = cc.getWallet().headWallet(val).descendingKeySet();
             
+            Wallet nextPayment = new Wallet(payment);
+            try {
+                nextPayment.subAmount(val, 1);
+                if (fillPayment(nextPayment, vals.iterator()) >= 0) {
+                    payments.add(nextPayment);
+                    paymentDecomposition(new Wallet(nextPayment), val);
+                }
+            }
+            catch (NegativeCoinAmountException e) {}
+
+            val = payment.higherKey(val);
         }
-                // if (!nextVal.equals(cc.getWallet().firstKey()))
-        // }
-        
     }
 
     @Override
@@ -68,7 +62,6 @@ public class AllPaymentCalc implements IPaymentCalc {
 
         Wallet nextPayment = new Wallet(firstPayment);
         paymentDecomposition(nextPayment, nextPayment.firstKey());
-
 
         return payments;
     }
