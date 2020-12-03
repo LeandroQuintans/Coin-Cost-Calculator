@@ -150,6 +150,11 @@ public class Wallet {
         return wallet.toString();
     }
 
+    @Override
+    public int hashCode() {
+        return wallet.hashCode();
+    }
+
     @Override 
     public boolean equals(Object other) {
         if (other == this) return true;
