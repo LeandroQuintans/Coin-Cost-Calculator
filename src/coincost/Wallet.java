@@ -17,6 +17,7 @@ public class Wallet {
 
     public Wallet(Map<? extends BigDecimal, ? extends Integer> m) {
         wallet = new TreeMap<BigDecimal, Integer>(m);
+        m.entrySet().stream().filter(pair -> pair.getValue() == 0).forEach(pair -> wallet.remove(pair.getKey()));
     }
 
     public Wallet(Wallet cp) {
@@ -133,7 +134,8 @@ public class Wallet {
             emptyPile(key);
     }
 
-    public Wallet subtract(Wallet other) throws NegativeCoinAmountException { // TODO needs test
+    // TODO needs test
+    public Wallet subtract(Wallet other) throws NegativeCoinAmountException { 
         Wallet result = new Wallet();
         for (BigDecimal key : this.keySet()) {
             int amount = this.get(key) - other.get(key);
