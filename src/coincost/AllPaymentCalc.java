@@ -56,12 +56,15 @@ public class AllPaymentCalc implements IPaymentCalc {
 
     @Override
     public Set<Wallet> payments() {
-        Wallet firstPayment = new Wallet();
-        fillPayment(firstPayment, cc.getWallet().descendingKeySet().iterator());
-        payments.add(firstPayment);
+        if (cc.getWallet().getFullTotal().compareTo(cc.getCost()) >= 0) {
+            Wallet firstPayment = new Wallet();
+            fillPayment(firstPayment, cc.getWallet().descendingKeySet().iterator());
 
-        Wallet nextPayment = new Wallet(firstPayment);
-        paymentDecomposition(nextPayment, nextPayment.firstKey());
+            payments.add(firstPayment);
+
+            Wallet nextPayment = new Wallet(firstPayment);
+            paymentDecomposition(nextPayment, nextPayment.firstKey());
+        }
 
         return payments;
     }
