@@ -10,10 +10,12 @@ import coincost.exceptions.NegativeCoinAmountException;
 
 public class AllPaymentCalc implements IPaymentCalc {
     private CoinCost cc;
+    private BigDecimal usedCost;
     private Set<Wallet> payments;
 
     public AllPaymentCalc(CoinCost cc) {
         this.cc = cc;
+        this.usedCost = cc.getCost();
         payments = new HashSet<>();
     }
 
@@ -21,7 +23,7 @@ public class AllPaymentCalc implements IPaymentCalc {
         Wallet unusedCoinsWallet = cc.getWallet().subtract(payment);
         while (vals.hasNext()) {
             BigDecimal walletVal = vals.next();
-            int amount = cc.getCost().subtract(payment.getFullTotal()).divideToIntegralValue(walletVal).intValue();
+            int amount = usedCost.subtract(payment.getFullTotal()).divideToIntegralValue(walletVal).intValue();
             try {
                 unusedCoinsWallet.subAmount(walletVal, amount);
             } catch (NegativeCoinAmountException e) {
@@ -30,10 +32,11 @@ public class AllPaymentCalc implements IPaymentCalc {
             }
             payment.addAmount(walletVal, amount);
 
-            if (payment.getFullTotal().equals(cc.getCost()))
+            if (payment.getFullTotal().equals(usedCost))
                 break;
         }
-        return payment.getFullTotal().compareTo(cc.getCost());
+
+        return payment.getFullTotal().compareTo(usedCost);
     }
 
     public void paymentDecomposition(Wallet payment, BigDecimal val) {
@@ -58,7 +61,13 @@ public class AllPaymentCalc implements IPaymentCalc {
     public Set<Wallet> payments() {
         if (cc.getWallet().getFullTotal().compareTo(cc.getCost()) >= 0) {
             Wallet firstPayment = new Wallet();
-            fillPayment(firstPayment, cc.getWallet().descendingKeySet().iterator());
+            int walletCostCompare = fillPayment(firstPayment, cc.getWallet().descendingKeySet().iterator());
+
+            if (walletCostCompare < 0 && cc.getWallet().getFullTotal().compareTo(cc.getCost()) >= 0) {
+                BigDecimal firstKey = cc.getWallet().firstKey();
+                firstPayment.addAmount(firstKey, 1);
+                usedCost = firstPayment.getFullTotal();
+            }
 
             payments.add(firstPayment);
 
