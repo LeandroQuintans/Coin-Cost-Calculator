@@ -64,9 +64,13 @@ public class AllPaymentCalc implements IPaymentCalc {
             int walletCostCompare = fillPayment(firstPayment, cc.getWallet().descendingKeySet().iterator());
 
             if (walletCostCompare < 0 && cc.getWallet().getFullTotal().compareTo(cc.getCost()) >= 0) {
-                BigDecimal firstKey = cc.getWallet().firstKey();
+                Wallet unusedCoinsWallet = cc.getWallet().subtract(firstPayment);
+                BigDecimal firstKey = unusedCoinsWallet.firstKey();
                 firstPayment.addAmount(firstKey, 1);
                 usedCost = firstPayment.getFullTotal();
+
+                firstPayment = new Wallet();
+                fillPayment(firstPayment, cc.getWallet().descendingKeySet().iterator());
             }
 
             payments.add(firstPayment);
