@@ -8,6 +8,7 @@ import java.util.Set;
 import coincost.exceptions.CoinDownsizeImpossibleException;
 import coincost.exceptions.NegativeCoinAmountException;
 
+// Kept here for studying but is incomplete, AllPaymentCalc should be used instead
 public class TopDownPaymentCalc implements IPaymentCalc {
     private CoinCost cc;
     private Wallet unusedCoinPile;
