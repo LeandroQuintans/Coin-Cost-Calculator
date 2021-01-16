@@ -80,10 +80,12 @@ public class Wallet {
         return new Wallet(wallet.headMap(toKey));
     }
 
+    // returns a part of the wallet, not to be confused with subtract
     public Wallet subWallet(BigDecimal fromKey, boolean fromInclusive, BigDecimal toKey, boolean toInclusive) {
         return new Wallet(wallet.subMap(fromKey, fromInclusive, toKey, toInclusive));
     }
 
+    // returns a part of the wallet, not to be confused with subtract
     public Wallet subWallet(BigDecimal fromKey, BigDecimal toKey) {
         return new Wallet(wallet.subMap(fromKey, toKey));
     }
@@ -134,7 +136,8 @@ public class Wallet {
             emptyPile(key);
     }
 
-    // TODO needs test
+    // this Wallet must have greater or equal number of coins in each coin value than other Wallet, 
+    // else it will throw an exception
     public Wallet subtract(Wallet other) throws NegativeCoinAmountException { 
         Wallet result = new Wallet();
         for (BigDecimal key : this.keySet()) {

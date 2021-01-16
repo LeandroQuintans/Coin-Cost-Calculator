@@ -125,4 +125,26 @@ public class WalletUnitTests {
         assertTrue(wallet.equals(otherWallet));
     }
 
+    @Test
+    public void subtract1() {
+        Wallet thisWallet = new Wallet(Map.of(
+            new BigDecimal("1.00"), 3,
+            new BigDecimal("0.50"), 2,
+            new BigDecimal("0.10"), 1
+        ));
+        Wallet otherWallet = new Wallet(Map.of(
+            new BigDecimal("1.00"), 1,
+            new BigDecimal("0.50"), 1,
+            new BigDecimal("0.10"), 1
+        ));
+        Wallet expected = new Wallet(Map.of(
+            new BigDecimal("1.00"), 2,
+            new BigDecimal("0.50"), 1,
+            new BigDecimal("0.10"), 0
+        ));
+        Wallet actual = thisWallet.subtract(otherWallet);
+
+        assertEquals(expected, actual);
+    }
+
 }
