@@ -91,7 +91,7 @@ public class WalletUnitTests {
     public void subAmountTest3() {
         BigDecimal key = new BigDecimal("0.20");
         
-        assertThrows(RuntimeException.class, () -> wallet.subAmount(key, 3));
+        assertThrows(NegativeCoinAmountException.class, () -> wallet.subAmount(key, 3));
     }
 
     @Test
@@ -147,4 +147,19 @@ public class WalletUnitTests {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void subtract2() {
+        Wallet thisWallet = new Wallet(Map.of(
+            new BigDecimal("1.00"), 3,
+            new BigDecimal("0.50"), 2,
+            new BigDecimal("0.10"), 1
+        ));
+        Wallet otherWallet = new Wallet(Map.of(
+            new BigDecimal("1.00"), 4,
+            new BigDecimal("0.50"), 1,
+            new BigDecimal("0.10"), 1
+        ));
+
+        assertThrows(NegativeCoinAmountException.class, () -> thisWallet.subtract(otherWallet));
+    }
 }
