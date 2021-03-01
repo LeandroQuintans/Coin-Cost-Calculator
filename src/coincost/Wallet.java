@@ -1,6 +1,7 @@
 package coincost;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.NavigableSet;
 import java.util.Set;
@@ -118,7 +119,7 @@ public class Wallet {
         return put(key, currentAmount + amount);
     }
     
-    public Integer subAmount(BigDecimal key, Integer amount) throws RuntimeException {
+    public Integer subAmount(BigDecimal key, Integer amount) throws NegativeCoinAmountException {
         Integer currentAmount = wallet.containsKey(key) ? wallet.get(key) : 0;
         return put(key, currentAmount - amount);
     }
@@ -138,7 +139,11 @@ public class Wallet {
 
     public Wallet add(Wallet other) {
         Wallet result = new Wallet();
-        for (BigDecimal key : this.keySet()) {
+        Set<BigDecimal> allKeySet = new HashSet<>();
+        allKeySet.addAll(this.keySet());
+        allKeySet.addAll(other.keySet());
+
+        for (BigDecimal key : allKeySet) {
             int amount = this.get(key) + other.get(key);
             result.put(key, amount);
         }

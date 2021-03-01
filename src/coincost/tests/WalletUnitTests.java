@@ -162,4 +162,29 @@ public class WalletUnitTests {
 
         assertThrows(NegativeCoinAmountException.class, () -> thisWallet.subtract(otherWallet));
     }
+
+    @Test
+    public void add() {
+        Wallet thisWallet = new Wallet(Map.of(
+            new BigDecimal("1.00"), 3,
+            new BigDecimal("0.50"), 2,
+            new BigDecimal("0.10"), 1
+        ));
+        Wallet otherWallet = new Wallet(Map.of(
+            new BigDecimal("1.00"), 1,
+            new BigDecimal("0.50"), 1,
+            new BigDecimal("0.10"), 1,
+            new BigDecimal("0.05"), 1
+        ));
+        Wallet expected = new Wallet(Map.of(
+            new BigDecimal("1.00"), 4,
+            new BigDecimal("0.50"), 3,
+            new BigDecimal("0.10"), 2,
+            new BigDecimal("0.05"), 1
+        ));
+        Wallet actual = thisWallet.add(otherWallet);
+
+        assertEquals(expected, actual);
+    }
+
 }
