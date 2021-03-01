@@ -136,9 +136,19 @@ public class Wallet {
             emptyPile(key);
     }
 
-    // this Wallet must have greater or equal number of coins in each coin value than other Wallet, 
+    public Wallet add(Wallet other) {
+        Wallet result = new Wallet();
+        for (BigDecimal key : this.keySet()) {
+            int amount = this.get(key) + other.get(key);
+            result.put(key, amount);
+        }
+
+        return result;
+    }
+
+    // this Wallet must have greater or equal number of coins in each coin value than other Wallet,
     // else it will throw an exception
-    public Wallet subtract(Wallet other) throws NegativeCoinAmountException { 
+    public Wallet subtract(Wallet other) throws NegativeCoinAmountException {
         Wallet result = new Wallet();
         for (BigDecimal key : this.keySet()) {
             int amount = this.get(key) - other.get(key);
