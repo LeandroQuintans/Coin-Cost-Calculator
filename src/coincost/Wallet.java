@@ -15,28 +15,30 @@ import coincost.exceptions.NegativeCoinAmountException;
  * entity.</p>
  * <p>Wallet is composed by a TreeMap with BigDecimal as keys 
  * and Integer as values.</p>
+ * <p>Wallet only stores positive valued entries. Zero or negative values are not permitted.</p>
  * @author Leandro Quintans
  */
 public class Wallet {
     private TreeMap<BigDecimal, Integer> wallet;
 
     /**
-     * <p>Constructor with no arguments, creates an empty TreeMap for its field</p>
+     * <p>Constructor with no arguments, creates an empty TreeMap for its field.</p>
      */
     public Wallet() {
         wallet = new TreeMap<BigDecimal, Integer>();
     }
 
     /**
-     * <p>Constructor using an existing Map as a starting point</p>
+     * <p>Constructor using an existing Map as a starting point.</p>
+     * <p>All negative or zero valued entries are removed from the walle.t</p>
      * <p>For the wallet field a new TreeMap is created using the Map, 
      * meaning any changes made to the argument Map will not 
-     * affect the wallet field</p>
+     * affect the wallet field.</p>
      * @param m Map with BigDecimal keys and Integer values, used as a starting point for the wallet field
      */
     public Wallet(Map<? extends BigDecimal, ? extends Integer> m) {
         wallet = new TreeMap<BigDecimal, Integer>(m);
-        m.entrySet().stream().filter(pair -> pair.getValue() == 0).forEach(pair -> wallet.remove(pair.getKey()));
+        m.entrySet().stream().filter(pair -> pair.getValue() <= 0).forEach(pair -> wallet.remove(pair.getKey()));
     }
 
     /**
