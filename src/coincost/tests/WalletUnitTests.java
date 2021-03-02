@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import coincost.Wallet;
 import coincost.exceptions.NegativeCoinAmountException;
 
+@SuppressWarnings("serial")
 public class WalletUnitTests {
     private Wallet wallet = new Wallet(
         new HashMap<BigDecimal, Integer>() {{

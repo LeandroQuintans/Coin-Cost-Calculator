@@ -14,7 +14,7 @@ import coincost.CoinCost;
 import coincost.AllPaymentCalc;
 import coincost.Wallet;
 
-
+@SuppressWarnings("serial")
 public class AllPaymentCalcUnitTests {
 
     @Test
