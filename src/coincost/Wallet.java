@@ -76,7 +76,7 @@ public class Wallet {
      */
     public Integer put(BigDecimal key, Integer value) {
         if (value < 0)
-            throw new NegativeCoinAmountException();
+            throw new NegativeCoinAmountException("Can't put a negative value in Wallet");
         if (value == 0)
             return wallet.remove(key);
         return wallet.put(key, value);
@@ -304,7 +304,7 @@ public class Wallet {
         for (BigDecimal key : this.keySet()) {
             int amount = this.get(key) - other.get(key);
             if (amount < 0)
-                throw new NegativeCoinAmountException();
+                throw new NegativeCoinAmountException("Wallet other has some amounts greater than Wallet this");
             result.put(key, amount);
         }
 
