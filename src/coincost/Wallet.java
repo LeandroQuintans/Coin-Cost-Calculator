@@ -38,7 +38,9 @@ public class Wallet {
      */
     public Wallet(Map<? extends BigDecimal, ? extends Integer> m) {
         wallet = new TreeMap<BigDecimal, Integer>(m);
-        m.entrySet().stream().filter(pair -> pair.getValue() <= 0).forEach(pair -> wallet.remove(pair.getKey()));
+        if (m.entrySet().stream().anyMatch(pair -> pair.getValue() < 0))
+            throw new NegativeCoinAmountException("Wallet can't have negative values");
+        m.entrySet().stream().filter(pair -> pair.getValue() == 0).forEach(pair -> wallet.remove(pair.getKey()));
     }
 
     /**
