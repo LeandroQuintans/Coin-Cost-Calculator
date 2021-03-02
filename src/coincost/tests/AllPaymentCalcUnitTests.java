@@ -4,7 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
-import java.util.Map;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.jupiter.api.Test;
@@ -19,52 +20,54 @@ public class AllPaymentCalcUnitTests {
     @Test
     public void paymentsTest1() {
         CoinCost cc = new CoinCost(
-            new Wallet(Map.of(
-                new BigDecimal("1.00"), 2,
-                new BigDecimal("0.50"), 4,
-                new BigDecimal("0.10"), 6
-            )), 
+            new Wallet(
+                new HashMap<BigDecimal, Integer>() {{
+                    put(new BigDecimal("1.00"), 2);
+                    put(new BigDecimal("0.50"), 4);
+                    put(new BigDecimal("0.10"), 6);
+                }}
+            ), 
             new BigDecimal("2.60")
         );
         AllPaymentCalc apc = new AllPaymentCalc(cc);
 
-        Set<Wallet> expected = Set.of(
-            new Wallet(
-                Map.of(
-                    new BigDecimal("1.00"), 2,
-                    new BigDecimal("0.50"), 1,
-                    new BigDecimal("0.10"), 1
-                )
-            ),
-            new Wallet(
-                Map.of(
-                    new BigDecimal("1.00"), 2,
-                    new BigDecimal("0.50"), 0,
-                    new BigDecimal("0.10"), 6
-                )
-            ),
-            new Wallet(
-                Map.of(
-                    new BigDecimal("1.00"), 1,
-                    new BigDecimal("0.50"), 3,
-                    new BigDecimal("0.10"), 1
-                )
-            ),
-            new Wallet(
-                Map.of(
-                    new BigDecimal("1.00"), 1,
-                    new BigDecimal("0.50"), 2,
-                    new BigDecimal("0.10"), 6
-                )
-            ),
-            new Wallet(
-                Map.of(
-                    new BigDecimal("1.00"), 0,
-                    new BigDecimal("0.50"), 4,
-                    new BigDecimal("0.10"), 6
-                )
-            )
-        );
+        Set<Wallet> expected = new HashSet<Wallet>() {{
+            add(new Wallet(
+                new HashMap<BigDecimal, Integer>() {{
+                    put(new BigDecimal("1.00"), 2);
+                    put(new BigDecimal("0.50"), 1);
+                    put(new BigDecimal("0.10"), 1);
+                }}
+            ));
+            add(new Wallet(
+                new HashMap<BigDecimal, Integer>() {{
+                    put(new BigDecimal("1.00"), 2);
+                    put(new BigDecimal("0.50"), 0);
+                    put(new BigDecimal("0.10"), 6);
+                }}
+            ));
+            add(new Wallet(
+                new HashMap<BigDecimal, Integer>() {{
+                    put(new BigDecimal("1.00"), 1);
+                    put(new BigDecimal("0.50"), 3);
+                    put(new BigDecimal("0.10"), 1);
+                }}
+            ));
+            add(new Wallet(
+                new HashMap<BigDecimal, Integer>() {{
+                    put(new BigDecimal("1.00"), 1);
+                    put(new BigDecimal("0.50"), 2);
+                    put(new BigDecimal("0.10"), 6);
+                }}
+            ));
+            add(new Wallet(
+                new HashMap<BigDecimal, Integer>() {{
+                    put(new BigDecimal("1.00"), 0);
+                    put(new BigDecimal("0.50"), 4);
+                    put(new BigDecimal("0.10"), 6);
+                }}
+            ));
+        }};
 
         Set<Wallet> actual = apc.payments();
 
@@ -74,52 +77,54 @@ public class AllPaymentCalcUnitTests {
     @Test
     public void paymentsTest2() {
         CoinCost cc = new CoinCost(
-            new Wallet(Map.of(
-                new BigDecimal("1.00"), 2,
-                new BigDecimal("0.50"), 4,
-                new BigDecimal("0.10"), 6
-            )), 
+            new Wallet(
+                new HashMap<BigDecimal, Integer>() {{
+                    put(new BigDecimal("1.00"), 2);
+                    put(new BigDecimal("0.50"), 4);
+                    put(new BigDecimal("0.10"), 6);
+                }}
+            ), 
             new BigDecimal("2.59")
         );
         AllPaymentCalc apc = new AllPaymentCalc(cc);
 
-        Set<Wallet> expected = Set.of(
-            new Wallet(
-                Map.of(
-                    new BigDecimal("1.00"), 2,
-                    new BigDecimal("0.50"), 1,
-                    new BigDecimal("0.10"), 1
-                )
-            ),
-            new Wallet(
-                Map.of(
-                    new BigDecimal("1.00"), 2,
-                    new BigDecimal("0.50"), 0,
-                    new BigDecimal("0.10"), 6
-                )
-            ),
-            new Wallet(
-                Map.of(
-                    new BigDecimal("1.00"), 1,
-                    new BigDecimal("0.50"), 3,
-                    new BigDecimal("0.10"), 1
-                )
-            ),
-            new Wallet(
-                Map.of(
-                    new BigDecimal("1.00"), 1,
-                    new BigDecimal("0.50"), 2,
-                    new BigDecimal("0.10"), 6
-                )
-            ),
-            new Wallet(
-                Map.of(
-                    new BigDecimal("1.00"), 0,
-                    new BigDecimal("0.50"), 4,
-                    new BigDecimal("0.10"), 6
-                )
-            )
-        );
+        Set<Wallet> expected = new HashSet<Wallet>() {{
+            add(new Wallet(
+                new HashMap<BigDecimal, Integer>() {{
+                    put(new BigDecimal("1.00"), 2);
+                    put(new BigDecimal("0.50"), 1);
+                    put(new BigDecimal("0.10"), 1);
+                }}
+            ));
+            add(new Wallet(
+                new HashMap<BigDecimal, Integer>() {{
+                    put(new BigDecimal("1.00"), 2);
+                    put(new BigDecimal("0.50"), 0);
+                    put(new BigDecimal("0.10"), 6);
+                }}
+            ));
+            add(new Wallet(
+                new HashMap<BigDecimal, Integer>() {{
+                    put(new BigDecimal("1.00"), 1);
+                    put(new BigDecimal("0.50"), 3);
+                    put(new BigDecimal("0.10"), 1);
+                }}
+            ));
+            add(new Wallet(
+                new HashMap<BigDecimal, Integer>() {{
+                    put(new BigDecimal("1.00"), 1);
+                    put(new BigDecimal("0.50"), 2);
+                    put(new BigDecimal("0.10"), 6);
+                }}
+            ));
+            add(new Wallet(
+                new HashMap<BigDecimal, Integer>() {{
+                    put(new BigDecimal("1.00"), 0);
+                    put(new BigDecimal("0.50"), 4);
+                    put(new BigDecimal("0.10"), 6);
+                }}
+            ));
+        }};
 
         Set<Wallet> actual = apc.payments();
 
@@ -129,11 +134,13 @@ public class AllPaymentCalcUnitTests {
     @Test
     public void paymentsTest3() {
         CoinCost cc = new CoinCost(
-            new Wallet(Map.of(
-                new BigDecimal("1.00"), 2,
-                new BigDecimal("0.50"), 4,
-                new BigDecimal("0.10"), 6
-            )), 
+            new Wallet(
+                new HashMap<BigDecimal, Integer>() {{
+                    put(new BigDecimal("1.00"), 2);
+                    put(new BigDecimal("0.50"), 4);
+                    put(new BigDecimal("0.10"), 6);
+                }}
+            ), 
             new BigDecimal("4.61")
         );
         AllPaymentCalc apc = new AllPaymentCalc(cc);
@@ -146,73 +153,75 @@ public class AllPaymentCalcUnitTests {
     @Test
     public void paymentsTest4() {
         CoinCost cc = new CoinCost(
-            new Wallet(Map.of(
-                new BigDecimal("1.00"), 2,
-                new BigDecimal("0.50"), 6,
-                new BigDecimal("0.20"), 1,
-                new BigDecimal("0.10"), 3,
-                new BigDecimal("0.01"), 1
-            )),
+            new Wallet(
+                new HashMap<BigDecimal, Integer>() {{
+                    put(new BigDecimal("1.00"), 2);
+                    put(new BigDecimal("0.50"), 6);
+                    put(new BigDecimal("0.20"), 1);
+                    put(new BigDecimal("0.10"), 3);
+                    put(new BigDecimal("0.01"), 1);
+                }}
+            ),
             new BigDecimal("2.62")
         );
         AllPaymentCalc apc = new AllPaymentCalc(cc);
 
-        Set<Wallet> expected = Set.of(
-            new Wallet(
-                Map.of(
-                    new BigDecimal("1.00"), 2,
-                    new BigDecimal("0.50"), 1,
-                    new BigDecimal("0.20"), 0,
-                    new BigDecimal("0.10"), 2,
-                    new BigDecimal("0.01"), 1
-                )
-            ),
-            new Wallet(
-                Map.of(
-                    new BigDecimal("1.00"), 1,
-                    new BigDecimal("0.50"), 3,
-                    new BigDecimal("0.20"), 0,
-                    new BigDecimal("0.10"), 2,
-                    new BigDecimal("0.01"), 1
-                )
-            ),
-            new Wallet(
-                Map.of(
-                    new BigDecimal("1.00"), 0,
-                    new BigDecimal("0.50"), 5,
-                    new BigDecimal("0.20"), 0,
-                    new BigDecimal("0.10"), 2,
-                    new BigDecimal("0.01"), 1
-                )
-            ),
-            new Wallet(
-                Map.of(
-                    new BigDecimal("1.00"), 0,
-                    new BigDecimal("0.50"), 5,
-                    new BigDecimal("0.20"), 1,
-                    new BigDecimal("0.10"), 0,
-                    new BigDecimal("0.01"), 1
-                )
-            ),
-            new Wallet(
-                Map.of(
-                    new BigDecimal("1.00"), 1,
-                    new BigDecimal("0.50"), 3,
-                    new BigDecimal("0.20"), 1,
-                    new BigDecimal("0.10"), 0,
-                    new BigDecimal("0.01"), 1
-                )
-            ),
-            new Wallet(
-                Map.of(
-                    new BigDecimal("1.00"), 2,
-                    new BigDecimal("0.50"), 1,
-                    new BigDecimal("0.20"), 1,
-                    new BigDecimal("0.10"), 0,
-                    new BigDecimal("0.01"), 1
-                )
-            )
-        );
+        Set<Wallet> expected = new HashSet<Wallet>() {{
+            add(new Wallet(
+                new HashMap<BigDecimal, Integer>() {{
+                    put(new BigDecimal("1.00"), 2);
+                    put(new BigDecimal("0.50"), 1);
+                    put(new BigDecimal("0.20"), 0);
+                    put(new BigDecimal("0.10"), 2);
+                    put(new BigDecimal("0.01"), 1);
+                }}
+            ));
+            add(new Wallet(
+                new HashMap<BigDecimal, Integer>() {{
+                    put(new BigDecimal("1.00"), 1);
+                    put(new BigDecimal("0.50"), 3);
+                    put(new BigDecimal("0.20"), 0);
+                    put(new BigDecimal("0.10"), 2);
+                    put(new BigDecimal("0.01"), 1);
+                }}
+            ));
+            add(new Wallet(
+                new HashMap<BigDecimal, Integer>() {{
+                    put(new BigDecimal("1.00"), 0);
+                    put(new BigDecimal("0.50"), 5);
+                    put(new BigDecimal("0.20"), 0);
+                    put(new BigDecimal("0.10"), 2);
+                    put(new BigDecimal("0.01"), 1);
+                }}
+            ));
+            add(new Wallet(
+                new HashMap<BigDecimal, Integer>() {{
+                    put(new BigDecimal("1.00"), 0);
+                    put(new BigDecimal("0.50"), 5);
+                    put(new BigDecimal("0.20"), 1);
+                    put(new BigDecimal("0.10"), 0);
+                    put(new BigDecimal("0.01"), 1);
+                }}
+            ));
+            add(new Wallet(
+                new HashMap<BigDecimal, Integer>() {{
+                    put(new BigDecimal("1.00"), 1);
+                    put(new BigDecimal("0.50"), 3);
+                    put(new BigDecimal("0.20"), 1);
+                    put(new BigDecimal("0.10"), 0);
+                    put(new BigDecimal("0.01"), 1);
+                }}
+            ));
+            add(new Wallet(
+                new HashMap<BigDecimal, Integer>() {{
+                    put(new BigDecimal("1.00"), 2);
+                    put(new BigDecimal("0.50"), 1);
+                    put(new BigDecimal("0.20"), 1);
+                    put(new BigDecimal("0.10"), 0);
+                    put(new BigDecimal("0.01"), 1);
+                }}
+            ));
+        }};
 
         Set<Wallet> actual = apc.payments();
 
