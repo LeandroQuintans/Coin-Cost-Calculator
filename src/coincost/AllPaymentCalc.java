@@ -7,19 +7,35 @@ import java.util.Set;
 
 import coincost.exceptions.NegativeCoinAmountException;
 
-
+/**
+ * <p>An implementation of {@link IPaymentCalc}</p>
+ * <p>This implementation calculates all possible payments, but might not be the most efficient
+ * since it does find repeats during the algorithm execution.</p>
+ * @author Leandro Quintans
+ */
 public class AllPaymentCalc implements IPaymentCalc {
     private CoinCost cc;
     private BigDecimal usedCost;
     private Set<Wallet> payments;
 
+    /**
+     * <p>Default constructor, takes a CoinCost argument.</p>
+     * @param cc
+     */
     public AllPaymentCalc(CoinCost cc) {
         this.cc = cc;
         this.usedCost = cc.getCost();
         payments = new HashSet<>();
     }
 
-    public int fillPayment(Wallet payment, Iterator<BigDecimal> vals) {
+    /**
+     * <p>Fills a Wallet entity with as many coins and bills possible until it's equal to the cost.</p>
+     * @param payment Payment to be filled
+     * @param vals Values of coins/bills to be used for filling 
+     * @return 0 or 1 if payment is equal or greater to the cost, -1 if otherwise
+     */
+    // TODO explain algorithm
+    private int fillPayment(Wallet payment, Iterator<BigDecimal> vals) {
         Wallet unusedCoinsWallet = cc.getWallet().subtract(payment);
         while (vals.hasNext()) {
             BigDecimal walletVal = vals.next();
@@ -39,6 +55,12 @@ public class AllPaymentCalc implements IPaymentCalc {
         return payment.getFullTotal().compareTo(usedCost);
     }
 
+    /**
+     * <p>Recursive method that fills the Set<Wallet> payments attribute.</p>
+     * @param payment Payment to be decomposed
+     * @param val Value of coin/bill
+     */
+    // TODO explain algorithm
     public void paymentDecomposition(Wallet payment, BigDecimal val) {
         while (val != null) {
             Set<BigDecimal> vals = cc.getWallet().headWallet(val).descendingKeySet();
@@ -57,8 +79,10 @@ public class AllPaymentCalc implements IPaymentCalc {
         }
     }
 
+    // TODO explain algorithm
     @Override
     public Set<Wallet> payments() {
+        // if the wallet has greater or equal money to the cost
         if (cc.getWallet().getFullTotal().compareTo(cc.getCost()) >= 0) {
             Wallet firstPayment = new Wallet();
             int walletCostCompare = fillPayment(firstPayment, cc.getWallet().descendingKeySet().iterator());
