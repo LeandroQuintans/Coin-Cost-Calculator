@@ -48,7 +48,7 @@ public class AllPaymentCalc implements IPaymentCalc {
             }
             payment.addAmount(walletVal, amount);
 
-            if (payment.getFullTotal().equals(usedCost))
+            if (payment.getFullTotal().equals(usedCost)) // TODO put condition in while
                 break;
         }
 
@@ -72,10 +72,15 @@ public class AllPaymentCalc implements IPaymentCalc {
                     payments.add(nextPayment);
                     paymentDecomposition(new Wallet(nextPayment), val);
                 }
+                else {
+                    Wallet payment2 = new Wallet(payment);
+                    payment2.subAmount(val, 1);
+                    paymentDecomposition(new Wallet(payment2), val);
+                }
             }
-            catch (NegativeCoinAmountException e) {}
-
-            val = payment.higherKey(val);
+            catch (NegativeCoinAmountException e) {
+                val = payment.lowerKey(val);
+            }
         }
     }
 
@@ -87,6 +92,8 @@ public class AllPaymentCalc implements IPaymentCalc {
             Wallet firstPayment = new Wallet();
             int walletCostCompare = fillPayment(firstPayment, cc.getWallet().descendingKeySet().iterator());
 
+
+            // When you don't have an exact amount to pay the cost
             if (walletCostCompare < 0 && cc.getWallet().getFullTotal().compareTo(cc.getCost()) >= 0) {
                 Wallet unusedCoinsWallet = cc.getWallet().subtract(firstPayment);
                 BigDecimal firstKey = unusedCoinsWallet.firstKey();
@@ -100,7 +107,7 @@ public class AllPaymentCalc implements IPaymentCalc {
             payments.add(firstPayment);
 
             Wallet nextPayment = new Wallet(firstPayment);
-            paymentDecomposition(nextPayment, nextPayment.firstKey());
+            paymentDecomposition(nextPayment, nextPayment.lastKey());
         }
 
         return payments;
