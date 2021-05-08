@@ -228,4 +228,48 @@ public class AllPaymentCalcUnitTests {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void paymentsTest5() {
+        CoinCost cc = new CoinCost(
+            new Wallet(
+                new HashMap<BigDecimal, Integer>() {{
+                    put(new BigDecimal("1.00"), 1);
+                    put(new BigDecimal("0.50"), 2);
+                    put(new BigDecimal("0.20"), 5);
+                }}
+            ), 
+            new BigDecimal("1.00")
+        );
+
+        AllPaymentCalc apc = new AllPaymentCalc(cc);
+
+        Set<Wallet> expected = new HashSet<Wallet>() {{
+            add(new Wallet(
+                new HashMap<BigDecimal, Integer>() {{
+                    put(new BigDecimal("1.00"), 1);
+                    put(new BigDecimal("0.50"), 0);
+                    put(new BigDecimal("0.20"), 0);
+                }}
+            ));
+            add(new Wallet(
+                new HashMap<BigDecimal, Integer>() {{
+                    put(new BigDecimal("1.00"), 0);
+                    put(new BigDecimal("0.50"), 2);
+                    put(new BigDecimal("0.20"), 0);
+                }}
+            ));
+            add(new Wallet(
+                new HashMap<BigDecimal, Integer>() {{
+                    put(new BigDecimal("1.00"), 0);
+                    put(new BigDecimal("0.50"), 0);
+                    put(new BigDecimal("0.20"), 5);
+                }}
+            ));
+        }};
+
+        Set<Wallet> actual = apc.payments();
+
+        assertEquals(expected, actual);
+    }
+
 }

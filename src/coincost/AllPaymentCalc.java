@@ -63,24 +63,20 @@ public class AllPaymentCalc implements IPaymentCalc {
     // TODO explain algorithm
     public void paymentDecomposition(Wallet payment, BigDecimal val) {
         while (val != null) {
-            Set<BigDecimal> vals = cc.getWallet().headWallet(val).descendingKeySet();
+            paymentDecomposition(payment, payment.lowerKey(val));
             
+            Set<BigDecimal> vals = cc.getWallet().headWallet(val).descendingKeySet();
+
             Wallet nextPayment = new Wallet(payment);
-            try {
-                nextPayment.subAmount(val, 1);
-                if (fillPayment(nextPayment, vals.iterator()) >= 0) {
-                    payments.add(nextPayment);
-                    paymentDecomposition(new Wallet(nextPayment), val);
-                }
-                else {
-                    Wallet payment2 = new Wallet(payment);
-                    payment2.subAmount(val, 1);
-                    paymentDecomposition(new Wallet(payment2), val);
-                }
+            nextPayment.subAmount(val, 1);
+            if (fillPayment(nextPayment, vals.iterator()) >= 0) {
+                payments.add(nextPayment);
             }
-            catch (NegativeCoinAmountException e) {
-                val = payment.lowerKey(val);
-            }
+            payment = nextPayment;
+
+            if (payment.get(val) == 0)
+                val = cc.getWallet().lowerKey(val);
+
         }
     }
 
