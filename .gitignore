@@ -24,3 +24,6 @@ hs_err_pid*
 
 # umlet diagram file extension
 *.uxf
+
+# VSCode config
+.vscode
